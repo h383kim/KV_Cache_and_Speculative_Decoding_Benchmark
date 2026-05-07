@@ -22,6 +22,9 @@ dependencies = [
 dev = [
     "pytest>=8",
 ]
+dashboard = [
+    "streamlit>=1.36",
+]
 
 [project.scripts]
 llm-inference-lab = "llm_inference_lab.cli:app"
