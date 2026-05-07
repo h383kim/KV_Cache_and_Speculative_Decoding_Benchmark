@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "llm-inference-lab"
+version = "0.1.0"
+description = "LLM inference benchmarking toolkit: KV cache profiling and speculative decoding."
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.2",
+    "transformers>=4.40",
+    "numpy>=1.26",
+    "typer>=0.12",
+    "pydantic>=2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+]
+
+[project.scripts]
+llm-inference-lab = "llm_inference_lab.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llm_inference_lab"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests that download models or otherwise take >5s",
+]
+testpaths = ["tests"]
