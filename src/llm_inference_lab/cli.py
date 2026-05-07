@@ -8,7 +8,11 @@ import typer
 
 from .kv_cache.profiler import run_kv_benchmark
 from .models.loader import load_model_and_tokenizer
+from .reports.plots import plot_kv_sweep, plot_spec_sweep
 from .speculative.benchmark import run_spec_benchmark
+from .sweeps.configs import load_kv_sweep, load_spec_sweep
+from .sweeps.kv_sweep import run_kv_sweep
+from .sweeps.spec_sweep import run_spec_sweep
 from .utils.device import dtype_from_str, pick_device
 from .utils.seed import set_seed
 
@@ -72,6 +76,40 @@ def spec_decode(
         max_new_tokens=max_new_tokens,
     )
     _emit(result, output)
+
+
+@app.command("kv-sweep")
+def kv_sweep(
+    config: Path = typer.Option(..., help="Path to a KV sweep YAML config."),
+) -> None:
+    cfg = load_kv_sweep(config)
+    out = run_kv_sweep(cfg)
+    typer.echo(str(out))
+
+
+@app.command("spec-sweep")
+def spec_sweep(
+    config: Path = typer.Option(..., help="Path to a speculative-decoding sweep YAML config."),
+) -> None:
+    cfg = load_spec_sweep(config)
+    out = run_spec_sweep(cfg)
+    typer.echo(str(out))
+
+
+@app.command("plot")
+def plot(
+    kind: str = typer.Option(..., help="kv or spec"),
+    input: Path = typer.Option(..., help="Path to a sweep results.jsonl."),
+    output: Path = typer.Option(Path("reports/figures"), help="Directory to write PNGs to."),
+) -> None:
+    if kind == "kv":
+        paths = plot_kv_sweep(input, output)
+    elif kind == "spec":
+        paths = plot_spec_sweep(input, output)
+    else:
+        raise typer.BadParameter("kind must be 'kv' or 'spec'")
+    for p in paths:
+        typer.echo(str(p))
 
 
 if __name__ == "__main__":

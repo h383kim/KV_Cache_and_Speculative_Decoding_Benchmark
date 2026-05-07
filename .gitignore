@@ -9,3 +9,7 @@ results/*.json
 results/*.jsonl
 results/*.csv
 !results/.gitkeep
+results/kv_sweep/
+results/spec_sweep/
+reports/figures/*.png
+!reports/figures/.gitkeep

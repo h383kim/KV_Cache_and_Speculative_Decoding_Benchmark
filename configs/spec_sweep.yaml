@@ -1,0 +1,11 @@
+target_model: gpt2
+draft_model: distilgpt2
+dtype: fp32
+prompts:
+  - "Once upon a time, in a land far away,"
+  - "Explain how attention works in transformers:"
+  - "Write a Python function to merge two sorted lists."
+draft_steps: [1, 2, 4, 8]
+max_new_tokens: [16, 32]
+output_dir: results/spec_sweep
+seed: 0

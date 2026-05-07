@@ -1,0 +1,8 @@
+model: distilgpt2
+dtype: fp32
+prompt_lengths: [64, 128, 256]
+generation_lengths: [16, 32]
+batch_sizes: [1, 2]
+use_cache_options: [true, false]
+output_dir: results/kv_sweep
+seed: 0
