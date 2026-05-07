@@ -60,6 +60,10 @@ def spec_decode(
     draft_steps: int = typer.Option(4, help="Number of draft tokens proposed per iteration."),
     max_new_tokens: int = typer.Option(64),
     dtype: str = typer.Option("fp32"),
+    temperature: float = typer.Option(
+        0.0, help="0 selects greedy decoding; >0 enables Leviathan-style sampling."
+    ),
+    top_p: Optional[float] = typer.Option(None, help="Top-p (nucleus) cutoff in (0, 1]."),
     seed: int = typer.Option(0),
     output: Optional[Path] = typer.Option(None),
 ) -> None:
@@ -74,6 +78,8 @@ def spec_decode(
         prompt=prompt,
         draft_steps=draft_steps,
         max_new_tokens=max_new_tokens,
+        temperature=temperature,
+        top_p=top_p,
     )
     _emit(result, output)
 
